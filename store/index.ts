@@ -1,8 +1,8 @@
 import { combineReducers, configureStore, type Reducer } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { api } from './features/baseApi'
-import type { AuthState } from './features/auth/authApi'
-import authReducer from './features/auth/authApi'
+import type { AuthState } from './features/auth/authSlice'
+import authReducer from './features/auth/authSlice'
 import type { TravelPlanState } from './features/travelPlan/travelPlanApi'
 import travelPlanReducer from './features/travelPlan/travelPlanApi'
 

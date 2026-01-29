@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { logoutAction, tokenRefreshed } from './auth/authApi'
+import { logoutAction, tokenRefreshed } from './auth/authSlice'
 
 // Base API configuration
 const isBrowser = typeof window !== 'undefined'

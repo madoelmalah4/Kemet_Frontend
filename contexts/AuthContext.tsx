@@ -3,7 +3,8 @@
 import React, { createContext, useContext, useEffect } from "react"
 import { User } from "@/types"
 import { useAppSelector, useAppDispatch } from "@/store/hooks"
-import { useLoginMutation, useLogoutMutation, useRefreshTokenMutation, logoutAction } from "@/store/features/auth/authApi"
+import { useLoginMutation, useLogoutMutation, useRefreshTokenMutation } from "@/store/features/auth/authApi"
+import { logoutAction } from "@/store/features/auth/authSlice"
 
 interface AuthContextType {
     user: User | null
