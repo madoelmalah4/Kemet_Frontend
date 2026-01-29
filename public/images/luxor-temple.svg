@@ -1,0 +1,16 @@
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="nileGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0891b2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0e7490;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="#ecfeff"/>
+  <rect x="0" y="200" width="600" height="200" fill="url(#nileGradient)" />
+  <rect x="100" y="150" width="80" height="200" fill="#d97706" />
+  <rect x="220" y="120" width="60" height="230" fill="#d97706" />
+  <rect x="320" y="160" width="90" height="190" fill="#d97706" />
+  <rect x="450" y="140" width="70" height="210" fill="#d97706" />
+  <circle cx="300" cy="80" r="25" fill="#fbbf24" />
+  <text x="300" y="380" text-anchor="middle" fill="#0e7490" font-family="system-ui, sans-serif" font-size="18" font-weight="bold">Luxor Temple</text>
+</svg>
