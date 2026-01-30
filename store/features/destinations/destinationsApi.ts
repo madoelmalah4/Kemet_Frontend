@@ -24,12 +24,26 @@ export const destinationsApi = api.injectEndpoints({
         // Get all destinations
         getDestinations: builder.query<Destination[], void>({
             query: () => '/Destinations',
+            transformResponse: (response: any) => {
+                const data = response?.data || response
+                return (Array.isArray(data) ? data : []).map((item: any) => ({
+                    ...item,
+                    id: item.id || item.Id || item.destinationId || ''
+                }))
+            },
             providesTags: ['Destination'],
         }),
 
         // Get specific destination by ID
         getDestination: builder.query<Destination, string>({
             query: (id) => `/Destinations/${id}`,
+            transformResponse: (response: any) => {
+                const data = response?.data || response
+                return {
+                    ...data,
+                    id: data.id || data.Id || data.destinationId || ''
+                }
+            },
             providesTags: (result, error, id) => [{ type: 'Destination', id }],
         }),
 
@@ -70,6 +84,7 @@ export const destinationsApi = api.injectEndpoints({
             query: (id) => ({
                 url: `/Destinations/${id}/favorite`,
                 method: 'POST',
+                body: {}, // Some servers require a body even if empty
             }),
             invalidatesTags: (result, error, id) => [{ type: 'Destination', id }, 'Favorites'],
         }),
@@ -78,12 +93,25 @@ export const destinationsApi = api.injectEndpoints({
             query: (id) => ({
                 url: `/Destinations/${id}/favorite`,
                 method: 'DELETE',
+                body: {}, // Some servers require a body even if empty
             }),
             invalidatesTags: (result, error, id) => [{ type: 'Destination', id }, 'Favorites'],
         }),
 
         getFavorites: builder.query<Destination[], void>({
             query: () => '/Destinations/favorites',
+            transformResponse: (response: any) => {
+                const data = response?.data || response
+                const list = Array.isArray(data) ? data : []
+                return list.map((item: any) => {
+                    // Extract destination if wrapped (some APIs return { destination: {...} })
+                    const dest = item.destination || item
+                    return {
+                        ...dest,
+                        id: dest.id || dest.Id || dest.destinationId || item.id || item.Id || item.destinationId || ''
+                    }
+                })
+            },
             providesTags: ['Favorites'],
         }),
     }),

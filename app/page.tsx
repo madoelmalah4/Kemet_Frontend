@@ -10,7 +10,63 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { useRef } from "react"
-import { useGetDestinationsQuery } from "@/store/features/destinations/destinationsApi"
+import { useGetDestinationsQuery, useGetFavoritesQuery, useAddFavoriteMutation, useRemoveFavoriteMutation } from "@/store/features/destinations/destinationsApi"
+import { useAppSelector } from "@/store/hooks"
+import { selectIsAuthenticated } from "@/store/features/auth/authSlice"
+import { useToast } from "@/components/ui/use-toast"
+import { Heart } from "lucide-react"
+
+function FavoriteButton({ id }: { id: string }) {
+    const { toast } = useToast()
+    const isAuthenticated = useAppSelector(selectIsAuthenticated)
+    const { data: favorites = [] } = useGetFavoritesQuery(undefined, { skip: !isAuthenticated })
+    const [addFavorite] = useAddFavoriteMutation()
+    const [removeFavorite] = useRemoveFavoriteMutation()
+
+    const isFavorite = favorites.some(f => f.id === id)
+
+    const handleToggleFavorite = async (e: React.MouseEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        if (!isAuthenticated) {
+            toast({
+                title: "Authentication Required",
+                description: "Please login to save favorites.",
+                variant: "destructive",
+            })
+            return
+        }
+
+        try {
+            if (isFavorite) {
+                await removeFavorite(id).unwrap()
+                toast({ title: "Removed from favorites" })
+            } else {
+                await addFavorite(id).unwrap()
+                toast({ title: "Added to favorites" })
+            }
+        } catch (err) {
+            toast({
+                title: "Error",
+                description: "Failed to update favorites.",
+                variant: "destructive",
+            })
+        }
+    }
+
+    return (
+        <Button
+            variant="secondary"
+            size="icon"
+            className={`rounded-full h-10 w-10 shadow-lg backdrop-blur-md transition-all ${isFavorite ? "bg-red-50 text-red-500" : "bg-white/20 text-white hover:bg-white/40"
+                }`}
+            onClick={handleToggleFavorite}
+        >
+            <Heart className={`w-5 h-5 ${isFavorite ? "fill-current" : ""}`} />
+        </Button>
+    )
+}
 
 export default function HomePage() {
     // Fetch real destinations from API
@@ -270,7 +326,7 @@ export default function HomePage() {
                                     transition={{ duration: 0.6, delay: index * 0.15 }}
                                     viewport={{ once: true }}
                                 >
-                                    <Link href={`/destinations/${destination.id}`}>
+                                    <Link href={`/destinations/detail?id=${destination.id}`}>
                                         <div className="group relative h-[500px] rounded-2xl overflow-hidden cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-500">
                                             <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-110">
                                                 {destination.imageUrl ? (
@@ -291,6 +347,11 @@ export default function HomePage() {
 
                                             {/* Sophisticated overlay */}
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-95 transition-all duration-500" />
+
+                                            {/* Favorite Button on Home Page */}
+                                            <div className="absolute top-4 right-4 z-20">
+                                                <FavoriteButton id={destination.id} />
+                                            </div>
 
                                             <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                                                 <h3 className="font-display text-2xl font-bold mb-3 text-white">{destination.name}</h3>

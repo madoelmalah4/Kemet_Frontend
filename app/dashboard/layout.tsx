@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import { Home, Map, MessageSquare, Languages, LogOut, PanelLeft, Pyramid } from "lucide-react"
+import { Home, Map, MessageSquare, Languages, LogOut, PanelLeft, Pyramid, Heart } from "lucide-react"
 import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -38,6 +38,7 @@ export default function DashboardLayout({
         { name: "My Travel Plan", href: "/dashboard/travel-plan", icon: Map },
         { name: "AI Assistant", href: "/dashboard/chatbot", icon: MessageSquare },
         { name: "Translator", href: "/dashboard/translator", icon: Languages },
+        { name: "Favorite Destinations", href: "/dashboard/favorites", icon: Heart },
     ]
 
     const isActive = (path: string) => pathname === path
