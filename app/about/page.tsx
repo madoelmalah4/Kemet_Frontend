@@ -7,11 +7,13 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Landmark, Palmtree, Sun, Users, Heart, Globe, ArrowRight, Sparkles } from "lucide-react"
-
 import Image from "next/image"
 import Link from "next/link"
+import { useAuth } from "@/contexts/AuthContext"
 
 export default function AboutPage() {
+    const { isAuthenticated } = useAuth()
+
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
@@ -38,7 +40,7 @@ export default function AboutPage() {
                                     Explore Destinations <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
                             </Link>
-                            <Link href="/dashboard/preferences">
+                            <Link href={isAuthenticated ? "/dashboard/travel-plan" : "/login"}>
                                 <Button size="lg" variant="outline" className="h-14 px-8 text-base">
                                     Plan Your Journey
                                 </Button>
@@ -82,7 +84,7 @@ export default function AboutPage() {
                             <Card className="glass-card border-white/40 overflow-hidden">
                                 <div className="aspect-[4/3] relative">
                                     <Image
-                                        src="https://images.unsplash.com/photo-1544865183-4914c67ae96b?q=80&w=2070&auto=format&fit=crop"
+                                        src="https://images.unsplash.com/photo-1632944398987-494eebe663be?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                         alt="Egyptian Columns"
                                         fill
                                         className="object-cover"

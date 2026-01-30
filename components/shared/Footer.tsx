@@ -9,9 +9,12 @@ export function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* About */}
                     <div>
-                        <h3 className="text-white font-semibold text-lg mb-4 font-display">Egypt Explorer</h3>
-                        <p className="text-sm text-gray-400 leading-relaxed">
-                            Your trusted companion for discovering the wonders of Egypt. Plan, explore, and experience the magic of ancient civilization.
+                        <div className="flex items-center space-x-3 mb-4">
+                            <div className="w-8 h-8 rounded-lg overflow-hidden bg-center bg-cover" style={{ backgroundImage: 'url(/logo.png)' }} />
+                            <h3 className="text-white font-bold text-xl font-display">Kemet</h3>
+                        </div>
+                        <p className="text-sm text-gray-400 leading-relaxed font-light">
+                            Your trusted companion for discovering the wonders of Egypt. Plan, explore, and experience the magic of ancient civilization through AI.
                         </p>
                     </div>
 
@@ -78,8 +81,8 @@ export function Footer() {
                     </div>
                 </div>
 
-                <div className="border-t border-white/10 mt-10 pt-8 text-center text-sm text-gray-400">
-                    <p>&copy; {new Date().getFullYear()} Egypt Explorer. All rights reserved.</p>
+                <div className="border-t border-white/10 mt-10 pt-8 text-center text-sm text-gray-500">
+                    <p>&copy; {new Date().getFullYear()} Kemet Explorer. All rights reserved.</p>
                 </div>
             </div>
         </footer>
