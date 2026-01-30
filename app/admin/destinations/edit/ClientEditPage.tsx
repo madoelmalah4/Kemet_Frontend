@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { ArrowLeft, Loader2, Save, Clock, DollarSign } from "lucide-react"
@@ -13,7 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useToast } from "@/components/ui/use-toast"
 import Link from "next/link"
-import { useCreateDestinationMutation } from "@/store/features/destinations/destinationsApi"
+import { useUpdateDestinationMutation, useGetDestinationQuery } from "@/store/features/destinations/destinationsApi"
 
 const destinationSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
@@ -28,10 +29,11 @@ const destinationSchema = z.object({
 
 type DestinationFormValues = z.infer<typeof destinationSchema>
 
-export default function CreateDestinationPage() {
+export default function ClientEditPage({ destinationId }: { destinationId: string }) {
     const router = useRouter()
     const { toast } = useToast()
-    const [createDestination, { isLoading }] = useCreateDestinationMutation()
+    const { data: destination, isLoading: isFetching } = useGetDestinationQuery(destinationId)
+    const [updateDestination, { isLoading: isUpdating }] = useUpdateDestinationMutation()
 
     const form = useForm<DestinationFormValues>({
         resolver: zodResolver(destinationSchema),
@@ -47,25 +49,52 @@ export default function CreateDestinationPage() {
         },
     })
 
+    // Reset form with data when loaded
+    useEffect(() => {
+        if (destination) {
+            form.reset({
+                name: destination.name,
+                city: destination.city,
+                description: destination.description,
+                imageUrl: destination.imageUrl,
+                vrUrlImage: destination.vrUrlImage || "",
+                estimatedPrice: destination.estimatedPrice || 0,
+                fromWorkingHours: destination.fromWorkingHours || "09:00:00",
+                endWorkingHours: destination.endWorkingHours || "18:00:00",
+            })
+        }
+    }, [destination, form])
+
     const onSubmit = async (data: DestinationFormValues) => {
         try {
-            await createDestination({
-                ...data,
-                vrUrlImage: data.vrUrlImage || "",
+            await updateDestination({
+                id: destinationId,
+                data: {
+                    ...data,
+                    vrUrlImage: data.vrUrlImage || "",
+                },
             }).unwrap()
 
             toast({
                 title: "Success",
-                description: "Destination created successfully",
+                description: "Destination updated successfully",
             })
             router.push("/admin/destinations")
         } catch (error) {
             toast({
                 title: "Error",
-                description: "Failed to create destination",
+                description: "Failed to update destination",
                 variant: "destructive",
             })
         }
+    }
+
+    if (isFetching) {
+        return (
+            <div className="flex justify-center items-center h-96">
+                <Loader2 className="w-8 h-8 animate-spin text-egyptian-gold" />
+            </div>
+        )
     }
 
     return (
@@ -81,8 +110,8 @@ export default function CreateDestinationPage() {
                     </Button>
                 </Link>
                 <div>
-                    <h1 className="text-3xl font-display font-bold text-gray-900">Create Destination</h1>
-                    <p className="text-gray-500">Add a new destination to the catalog</p>
+                    <h1 className="text-3xl font-display font-bold text-gray-900">Edit Destination</h1>
+                    <p className="text-gray-500">Update destination details</p>
                 </div>
             </div>
 
@@ -220,22 +249,22 @@ export default function CreateDestinationPage() {
                             <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-800">
                                 <Button
                                     type="submit"
-                                    disabled={isLoading}
+                                    disabled={isUpdating}
                                     className="relative px-6 py-2.5 rounded-xl font-medium text-white 
                bg-gradient-to-r from-egyptian-nile to-blue-600 
                hover:from-blue-600 hover:to-egyptian-nile
                transition-all duration-300 shadow-md hover:shadow-lg 
                disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    {isLoading ? (
+                                    {isUpdating ? (
                                         <span className="flex items-center gap-2">
                                             <Loader2 className="w-4 h-4 animate-spin" />
-                                            Creating...
+                                            Updating...
                                         </span>
                                     ) : (
                                         <span className="flex items-center gap-2">
                                             <Save className="w-4 h-4" />
-                                            Create Destination
+                                            Update Destination
                                         </span>
                                     )}
                                 </Button>

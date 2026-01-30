@@ -31,7 +31,7 @@ export default function AdminLayout({
 
     useEffect(() => {
         if (mounted && (!isAuthenticated || !isAdmin)) {
-            router.push("/login")
+            router.push("/")
         }
     }, [isAuthenticated, isAdmin, router, mounted])
 

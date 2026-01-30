@@ -274,11 +274,13 @@ export default function HomePage() {
                                         <div className="group relative h-[500px] rounded-2xl overflow-hidden cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-500">
                                             <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-110">
                                                 {destination.imageUrl ? (
-                                                    <OptimizedImage
+                                                    <Image
                                                         src={destination.imageUrl}
-                                                        alt={destination.name}
+                                                        alt={destination.name || "Destination image"}
                                                         fill
+                                                        sizes="100vw"
                                                         className="object-cover"
+                                                        priority
                                                     />
                                                 ) : (
                                                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">

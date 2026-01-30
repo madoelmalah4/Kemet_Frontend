@@ -3,15 +3,18 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { ArrowRight, Map, MessageSquare, Languages, Sparkles, Calendar, MapPin, Clock, TrendingUp, Compass } from "lucide-react"
+import { ArrowRight, Map, MessageSquare, Languages, Sparkles, Calendar, MapPin, Clock, TrendingUp, Compass, Heart } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/contexts/AuthContext"
 import { useTravelPlanContext } from "@/contexts/TravelPlanContext"
+import { useGetFavoritesQuery } from "@/store/features/destinations/destinationsApi"
+import { Loader2 } from "lucide-react"
 
 export default function DashboardPage() {
     const { user } = useAuth()
     const { travelPlan } = useTravelPlanContext()
+    const { data: favorites = [], isLoading: isFavoritesLoading } = useGetFavoritesQuery()
     const [greeting, setGreeting] = useState("Hello")
     const [mounted, setMounted] = useState(false)
 
@@ -51,6 +54,14 @@ export default function DashboardPage() {
             href: "/dashboard/translator",
             gradient: "from-orange-500 to-red-500",
             iconBg: "bg-gradient-to-br from-orange-500 to-red-500"
+        },
+        {
+            title: "My Favorites",
+            description: "Saved destinations",
+            icon: Heart,
+            href: "/dashboard/favorites",
+            gradient: "from-red-500 to-orange-500",
+            iconBg: "bg-gradient-to-br from-red-500 to-orange-500"
         }
     ]
 
@@ -204,6 +215,66 @@ export default function DashboardPage() {
                             </Link>
                         ))}
                     </div>
+                </motion.div>
+
+                {/* Saved Destinations Preview */}
+                <motion.div variants={item}>
+                    <div className="flex items-center justify-between gap-3 mb-6">
+                        <div className="flex items-center gap-3">
+                            <div className="w-1 h-8 bg-gradient-to-b from-red-500 to-orange-500 rounded-full" />
+                            <h2 className="font-display text-2xl font-bold text-gray-900">Saved Destinations</h2>
+                        </div>
+                        <Link href="/dashboard/favorites" className="text-blue-600 hover:text-blue-700 text-sm font-semibold flex items-center gap-1">
+                            View All <ArrowRight className="w-4 h-4" />
+                        </Link>
+                    </div>
+
+                    {isFavoritesLoading ? (
+                        <div className="flex justify-center items-center py-12">
+                            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                        </div>
+                    ) : favorites.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {favorites.slice(0, 4).map((destination) => (
+                                <Link key={destination.id} href={`/destinations/detail?id=${destination.id}`}>
+                                    <motion.div
+                                        whileHover={{ y: -5 }}
+                                        className="group relative aspect-[4/5] rounded-2xl overflow-hidden shadow-lg"
+                                    >
+                                        <Image
+                                            src={destination.imageUrl}
+                                            alt={destination.name}
+                                            fill
+                                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                                            <div className="flex items-center gap-1 text-white/80 text-xs mb-1">
+                                                <MapPin className="w-3 h-3" />
+                                                {destination.city}
+                                            </div>
+                                            <h3 className="text-white font-bold text-lg leading-tight line-clamp-2">
+                                                {destination.name}
+                                            </h3>
+                                        </div>
+                                    </motion.div>
+                                </Link>
+                            ))}
+                        </div>
+                    ) : (
+                        <Card className="border-none shadow-md bg-white p-8 text-center transition-all hover:shadow-lg">
+                            <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <Heart className="w-6 h-6 text-red-500" />
+                            </div>
+                            <h3 className="font-bold text-gray-900 mb-2">No favorites yet</h3>
+                            <p className="text-gray-500 text-sm mb-4">Start exploring Egypt and save your favorite spots!</p>
+                            <Link href="/destinations">
+                                <Button variant="outline" size="sm" className="border-blue-200 text-blue-600 hover:bg-blue-50">
+                                    Explore Now
+                                </Button>
+                            </Link>
+                        </Card>
+                    )}
                 </motion.div>
 
                 {/* Info Cards */}

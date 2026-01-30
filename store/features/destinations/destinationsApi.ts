@@ -8,6 +8,10 @@ export interface Destination {
     description: string
     imageUrl: string
     vrUrlImage: string
+    estimatedPrice?: number
+    fromWorkingHours?: string
+    endWorkingHours?: string
+    isFavorite?: boolean // Client-side helper
 }
 
 export interface DestinationFilters {
@@ -60,6 +64,28 @@ export const destinationsApi = api.injectEndpoints({
             }),
             invalidatesTags: ['Destination'],
         }),
+
+        // Favorite Endpoints
+        addFavorite: builder.mutation<{ message: string }, string>({
+            query: (id) => ({
+                url: `/Destinations/${id}/favorite`,
+                method: 'POST',
+            }),
+            invalidatesTags: (result, error, id) => [{ type: 'Destination', id }, 'Favorites'],
+        }),
+
+        removeFavorite: builder.mutation<{ message: string }, string>({
+            query: (id) => ({
+                url: `/Destinations/${id}/favorite`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: (result, error, id) => [{ type: 'Destination', id }, 'Favorites'],
+        }),
+
+        getFavorites: builder.query<Destination[], void>({
+            query: () => '/Destinations/favorites',
+            providesTags: ['Favorites'],
+        }),
     }),
 })
 
@@ -69,4 +95,7 @@ export const {
     useCreateDestinationMutation,
     useUpdateDestinationMutation,
     useDeleteDestinationMutation,
+    useAddFavoriteMutation,
+    useRemoveFavoriteMutation,
+    useGetFavoritesQuery,
 } = destinationsApi

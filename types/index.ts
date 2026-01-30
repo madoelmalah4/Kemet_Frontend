@@ -29,6 +29,9 @@ export interface Destination {
     description: string
     imageUrl: string
     vrUrlImage: string
+    estimatedPrice?: number
+    fromWorkingHours?: string
+    endWorkingHours?: string
 }
 
 export interface Activity {

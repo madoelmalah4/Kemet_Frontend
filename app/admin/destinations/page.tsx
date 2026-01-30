@@ -189,6 +189,7 @@ export default function AdminDestinationsPage() {
                                 <TableHead className="w-[80px]">Image</TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>City</TableHead>
+                                <TableHead>Price</TableHead>
                                 <TableHead className="w-[120px]">Features</TableHead>
                                 <TableHead className="text-right w-[140px]">Actions</TableHead>
                             </TableRow>
@@ -232,6 +233,11 @@ export default function AdminDestinationsPage() {
                                             </div>
                                         </TableCell>
                                         <TableCell>
+                                            <div className="font-semibold text-gray-900">
+                                                {destination.estimatedPrice ?? 0} EGP
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
                                             <div className="flex gap-1.5">
                                                 {destination.imageUrl && (
                                                     <Badge variant="secondary" className="text-xs bg-green-100 text-green-700 hover:bg-green-100">
@@ -249,12 +255,12 @@ export default function AdminDestinationsPage() {
                                         </TableCell>
                                         <TableCell className="text-right">
                                             <div className="flex items-center justify-end gap-1">
-                                                <Link href={`/destinations/${destination.id}`} target="_blank">
+                                                <Link href={`/destinations/detail?id=${destination.id}`} target="_blank">
                                                     <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-600 hover:text-blue-600 hover:bg-blue-50">
                                                         <Eye className="w-4 h-4" />
                                                     </Button>
                                                 </Link>
-                                                <Link href={`/admin/destinations/edit/${destination.id}`}>
+                                                <Link href={`/admin/destinations/edit?id=${destination.id}`}>
                                                     <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-600 hover:text-orange-600 hover:bg-orange-50">
                                                         <Edit className="w-4 h-4" />
                                                     </Button>
