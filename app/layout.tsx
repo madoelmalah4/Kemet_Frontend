@@ -19,10 +19,37 @@ const display = DM_Serif_Display({
 })
 
 export const metadata: Metadata = {
-    title: "Egypt Explorer - Discover the Wonders of Egypt",
+    title: "Kemet - Discover Ancient Wonders",
     description: "Your AI-powered guide to exploring Egypt's ancient wonders, vibrant culture, and breathtaking destinations.",
+    metadataBase: new URL('https://kemet-explorer.com'), // Replace with your actual domain
+    alternates: {
+        canonical: '/',
+    },
+    openGraph: {
+        title: "Kemet - Discover Ancient Wonders",
+        description: "Your AI-powered guide to exploring Egypt's ancient wonders, vibrant culture, and breathtaking destinations.",
+        url: 'https://kemet-explorer.com', // Replace with your actual domain
+        siteName: 'Kemet',
+        images: [
+            {
+                url: '/logo.png', // Ideally a 1200x630 image for best results
+                width: 1200,
+                height: 630,
+                alt: 'Kemet - Ancient Modernity',
+            },
+        ],
+        locale: 'en_US',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: "Kemet - Discover Ancient Wonders",
+        description: "Your AI-powered guide to exploring Egypt's ancient wonders, vibrant culture, and breathtaking destinations.",
+        images: ['/logo.png'],
+    },
     icons: {
-        icon: '/favicon.ico',
+        icon: '/logo.png',
+        apple: '/logo.png',
     },
 }
 

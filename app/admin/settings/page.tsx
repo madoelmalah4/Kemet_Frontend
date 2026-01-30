@@ -9,8 +9,8 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 
 export default function AdminSettingsPage() {
-    const [platformName, setPlatformName] = useState("Egypt Explorer")
-    const [supportEmail, setSupportEmail] = useState("info@egyptexplorer.com")
+    const [platformName, setPlatformName] = useState("Kemet")
+    const [supportEmail, setSupportEmail] = useState("info@kemet.com")
     const [maintenanceMode, setMaintenanceMode] = useState(false)
 
     return (

@@ -144,7 +144,7 @@ export default function HomePage() {
                         >
                             <Badge className="px-6 py-2 bg-white/80 backdrop-blur-md text-orange-500 border-orange-200 shadow-lg hover:shadow-xl transition-all duration-300">
                                 <Sparkles className="h-4 w-4 mr-2" />
-                                AI-Powered Egypt Explorer
+                                AI-Powered Kemet Explorer
                             </Badge>
                         </motion.div>
 
