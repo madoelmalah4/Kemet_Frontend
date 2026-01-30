@@ -3,13 +3,13 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { ArrowRight, Map, MessageSquare, Languages, Sparkles, Calendar, MapPin, Clock, TrendingUp, Compass, Heart } from "lucide-react"
+import Image from "next/image"
+import { ArrowRight, Map, MessageSquare, Languages, Sparkles, Calendar, MapPin, Clock, TrendingUp, Compass, Heart, Loader2 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/contexts/AuthContext"
 import { useTravelPlanContext } from "@/contexts/TravelPlanContext"
 import { useGetFavoritesQuery } from "@/store/features/destinations/destinationsApi"
-import { Loader2 } from "lucide-react"
 
 export default function DashboardPage() {
     const { user } = useAuth()

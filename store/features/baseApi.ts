@@ -211,6 +211,7 @@ export const api = createApi({
         'Review',
         'Preference',
         'Notification',
+        'Favorites',
     ],
     endpoints: () => ({}),
 })

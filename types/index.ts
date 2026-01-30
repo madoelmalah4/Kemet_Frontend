@@ -1,24 +1,29 @@
-// User types
 export interface User {
     id: string
     email: string
     name: string
     role: "tourist" | "admin"
+    password?: string
     avatar?: string
-    preferences?: TouristPreferences
+    preferences?: any
     createdAt: string
+    updatedAt?: string
 }
 
 export interface TouristPreferences {
     interests: string[]
-    budget: "budget" | "moderate" | "luxury"
-    travelDates: {
+    budget?: any
+    travelDates?: {
         start: string
         end: string
     }
-    groupSize: number
-    travelStyle: string[]
+    groupSize?: number
+    travelStyle?: string[]
     accessibility?: string[]
+    language?: string
+    currency?: string
+    notifications?: boolean
+    theme?: string
 }
 
 // Destination types
@@ -54,6 +59,8 @@ export interface TravelPlan {
     days: TravelDay[]
     budget: number
     status: "draft" | "confirmed" | "completed"
+    destination?: string
+    preferences?: any
     createdAt: string
     updatedAt: string
 }

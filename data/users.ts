@@ -42,7 +42,7 @@ export const mockTravelPlans: TravelPlan[] = [
         destination: "Cairo",
         startDate: "2024-05-01",
         endDate: "2024-05-07",
-        budget: "2000",
+        budget: 2000,
         preferences: {
             interests: ["History", "Food"],
             pace: "moderate",
